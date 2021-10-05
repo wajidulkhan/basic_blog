@@ -1,0 +1,41 @@
+{% extends 'enroll/base.html' %}
+
+{% block content %}
+
+<div class="container ">
+    <div class="text-center">
+        <h1>Registration Page</h1>
+    </div>
+
+    <div class="row">
+        <div class="col my-3">
+
+            {% if messages %}
+            {% for message in messages %}
+            <p{% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</p>
+            {% endfor %}
+            {% endif %}
+            
+            <form action="" method="POST" class="w-75 m-auto" novalidate>
+                {% csrf_token %}
+
+                {% if form.non_field_errors %}
+                {% for error in form.non_field_errors %} 
+                <p class="alert alert-warning">{{error}}</p> 
+                {% endfor %}
+                {% endif %}
+                
+                {% for fm in form  %}
+                <div class="form-group">
+                    <div class="item">
+                        {{fm.label_tag}} {{fm}} <small class="text-danger">{{fm.errors|striptags}} </small>
+                    </div>
+                </div>
+                {% endfor %}
+                <input type="submit" value="submit" class='btn btn-primary my-3'>
+                
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

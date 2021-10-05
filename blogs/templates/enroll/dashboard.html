@@ -1,0 +1,90 @@
+{% extends 'enroll/base.html' %} 
+
+
+{% block msg %}
+
+{% if messages %}
+{% for message in messages %}
+    <div {% if message.tags %} class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert" {% endif %}>
+  <strong>{{ message }}</strong> 
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>  
+    </div>
+{% endfor %} 
+{% endif %} 
+{% endblock msg %}
+
+
+        {% block side %}
+
+          
+              <h4 class="my-5">profile</h4>  
+              <h5>{{full_name}}</h5>
+              {% for group in gps %}
+                  <p>{{group.name}}</p> 
+              {% endfor %}
+              <div>client IP:<h3>{{ip}}</h3></div> 
+              <div>count:<h3>{{ct}}</h3></div> 
+
+         
+        {% endblock side %}
+
+
+
+{% block content %}
+     
+     {% for ssm in sm  %}
+        <h3 class='d-inline m-2'>{{ssm}}</h3>   
+     {% endfor %} 
+        <h1 class="text-center">This is Dashboard</h1> 
+        <div class="row">
+            <div class="col">
+              <div class="my-0"> 
+                <a class="btn btn-success" href="{% url 'adddata' %}">ADD DATA</a> 
+            </div>
+                <table class="table table-hover my-2">  
+                    <thead class="table-dark">  
+                      <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">TITLE</th>
+                        <th scope="col">DESC</th>
+                        <th scope="col">ACTION</th>
+                        <th scope="col">DELETE</th> 
+
+                      </tr>
+                    </thead>
+                    <tbody> 
+                    {% for forms in form %}
+                      <tr>
+                        <th scope="row">{{forms.id}}</th>
+                        <td>{{forms.title}}</td>
+                        <td>{{forms.desc}}</td> 
+                        <td>
+                            <a class="btn btn-warning btn-sm" href="{% url 'updatedata' forms.id %}" role="button">Edit</a> 
+                        </td> 
+                        {% if perms.blogs.delete_data %}
+                        <td>
+                            <form action="{% url 'deletedata' forms.id %}" method="POST" class="d-inline">  
+                                {% csrf_token %}
+                                <button class="btn btn-danger btn-sm" type="submit" >Delete</button>            
+                            </form>
+                        </td>
+                        {% endif %}
+                      </tr> 
+                      {% endfor %}
+                    </tbody>
+                  </table>
+           
+        </div>
+    </div>
+
+  
+   
+
+
+
+   
+
+          
+{% endblock content %}
+
+
